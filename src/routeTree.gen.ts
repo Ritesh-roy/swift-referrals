@@ -9,8 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as PatientsRouteImport } from './routes/patients'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as HelpRouteImport } from './routes/help'
 import { Route as ConsultationsRouteImport } from './routes/consultations'
 import { Route as AppointmentsRouteImport } from './routes/appointments'
 import { Route as IndexRouteImport } from './routes/index'
@@ -18,6 +20,11 @@ import { Route as ReferralsIndexRouteImport } from './routes/referrals.index'
 import { Route as ReferralsNewRouteImport } from './routes/referrals.new'
 import { Route as ReferralsIdRouteImport } from './routes/referrals.$id'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PatientsRoute = PatientsRouteImport.update({
   id: '/patients',
   path: '/patients',
@@ -26,6 +33,11 @@ const PatientsRoute = PatientsRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConsultationsRoute = ConsultationsRouteImport.update({
@@ -63,8 +75,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/appointments': typeof AppointmentsRoute
   '/consultations': typeof ConsultationsRoute
+  '/help': typeof HelpRoute
   '/login': typeof LoginRoute
   '/patients': typeof PatientsRoute
+  '/settings': typeof SettingsRoute
   '/referrals/$id': typeof ReferralsIdRoute
   '/referrals/new': typeof ReferralsNewRoute
   '/referrals/': typeof ReferralsIndexRoute
@@ -73,8 +87,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/appointments': typeof AppointmentsRoute
   '/consultations': typeof ConsultationsRoute
+  '/help': typeof HelpRoute
   '/login': typeof LoginRoute
   '/patients': typeof PatientsRoute
+  '/settings': typeof SettingsRoute
   '/referrals/$id': typeof ReferralsIdRoute
   '/referrals/new': typeof ReferralsNewRoute
   '/referrals': typeof ReferralsIndexRoute
@@ -84,8 +100,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/appointments': typeof AppointmentsRoute
   '/consultations': typeof ConsultationsRoute
+  '/help': typeof HelpRoute
   '/login': typeof LoginRoute
   '/patients': typeof PatientsRoute
+  '/settings': typeof SettingsRoute
   '/referrals/$id': typeof ReferralsIdRoute
   '/referrals/new': typeof ReferralsNewRoute
   '/referrals/': typeof ReferralsIndexRoute
@@ -96,8 +114,10 @@ export interface FileRouteTypes {
     | '/'
     | '/appointments'
     | '/consultations'
+    | '/help'
     | '/login'
     | '/patients'
+    | '/settings'
     | '/referrals/$id'
     | '/referrals/new'
     | '/referrals/'
@@ -106,8 +126,10 @@ export interface FileRouteTypes {
     | '/'
     | '/appointments'
     | '/consultations'
+    | '/help'
     | '/login'
     | '/patients'
+    | '/settings'
     | '/referrals/$id'
     | '/referrals/new'
     | '/referrals'
@@ -116,8 +138,10 @@ export interface FileRouteTypes {
     | '/'
     | '/appointments'
     | '/consultations'
+    | '/help'
     | '/login'
     | '/patients'
+    | '/settings'
     | '/referrals/$id'
     | '/referrals/new'
     | '/referrals/'
@@ -127,8 +151,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppointmentsRoute: typeof AppointmentsRoute
   ConsultationsRoute: typeof ConsultationsRoute
+  HelpRoute: typeof HelpRoute
   LoginRoute: typeof LoginRoute
   PatientsRoute: typeof PatientsRoute
+  SettingsRoute: typeof SettingsRoute
   ReferralsIdRoute: typeof ReferralsIdRoute
   ReferralsNewRoute: typeof ReferralsNewRoute
   ReferralsIndexRoute: typeof ReferralsIndexRoute
@@ -136,6 +162,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/patients': {
       id: '/patients'
       path: '/patients'
@@ -148,6 +181,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/consultations': {
@@ -199,8 +239,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppointmentsRoute: AppointmentsRoute,
   ConsultationsRoute: ConsultationsRoute,
+  HelpRoute: HelpRoute,
   LoginRoute: LoginRoute,
   PatientsRoute: PatientsRoute,
+  SettingsRoute: SettingsRoute,
   ReferralsIdRoute: ReferralsIdRoute,
   ReferralsNewRoute: ReferralsNewRoute,
   ReferralsIndexRoute: ReferralsIndexRoute,
