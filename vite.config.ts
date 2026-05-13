@@ -20,6 +20,9 @@ export default defineConfig({
         "swift-referrals.onrender.com",
         "*.vercel.app",
         "*.vercel.com",
+        "*.render.com",
+
+        
       ],
     },
   },
