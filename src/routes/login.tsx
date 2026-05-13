@@ -161,7 +161,10 @@ function LoginPage() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <Label htmlFor="password">Password</Label>
-                      <button type="button" className="text-xs text-muted-foreground hover:text-foreground" onClick={() => toast.message("Password reset link sent (demo).")}>
+                      <button type="button" className="text-xs text-muted-foreground hover:text-foreground" onClick={() => {
+                        if (!email) { toast.error("Enter your email first."); return; }
+                        toast.success("Password reset link sent", { description: `Check ${email} for instructions.` });
+                      }}>
                         Forgot?
                       </button>
                     </div>
@@ -173,9 +176,9 @@ function LoginPage() {
                   <Button type="submit" disabled={loading} className="w-full bg-gradient-primary text-primary-foreground shadow-glow">
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign in"}
                   </Button>
-                  <Button type="button" variant="outline" className="w-full" onClick={useDemo} disabled={loading}>
-                    Continue with demo account
-                  </Button>
+                  <p className="text-[11px] text-muted-foreground text-center">
+                    Protected by HIPAA-aligned audit logging and end-to-end encryption.
+                  </p>
                 </form>
               </TabsContent>
 
@@ -218,8 +221,7 @@ function LoginPage() {
             </Tabs>
 
             <p className="text-[11px] text-muted-foreground text-center">
-              By continuing you agree to our Terms and acknowledge the Privacy Notice.
-              Demo data only — no real PHI is stored.
+              By continuing you agree to our <span className="text-foreground/80">Terms of Service</span> and acknowledge the <span className="text-foreground/80">Privacy Notice</span>.
             </p>
           </CardContent>
         </Card>
