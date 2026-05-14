@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,9 +13,15 @@ export const Route = createFileRoute("/appointments")({
 });
 
 function AppointmentsPage() {
+  const location = useLocation();
   const [stored, setStored] = useState(() => getStoredAppointments());
   useEffect(() => subscribeAppointments(() => setStored(getStoredAppointments())), []);
   const all = [...appointments, ...stored];
+
+  if (location.pathname !== "/appointments") {
+    return <Outlet />;
+  }
+
   // Build a 14-day calendar starting from today
   const today = new Date();
   today.setHours(0, 0, 0, 0);
