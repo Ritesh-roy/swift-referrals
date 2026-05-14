@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ShieldAlert, Users, Stethoscope, Inbox, CalendarDays, Search } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,6 +15,7 @@ import {
   referrals,
   statusMeta,
 } from "@/lib/mock-data";
+import { getStoredAppointments, subscribeAppointments } from "@/lib/appointments-store";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "Admin — Refera" }] }),
@@ -24,6 +25,9 @@ export const Route = createFileRoute("/admin")({
 function AdminPage() {
   const [q, setQ] = useState("");
   const term = q.trim().toLowerCase();
+  const [stored, setStored] = useState(() => getStoredAppointments());
+  useEffect(() => subscribeAppointments(() => setStored(getStoredAppointments())), []);
+  const allAppointments = useMemo(() => [...appointments, ...stored], [stored]);
 
   const fPatients = useMemo(
     () =>
@@ -65,7 +69,7 @@ function AdminPage() {
   );
   const fAppts = useMemo(
     () =>
-      appointments.filter((a) => {
+      allAppointments.filter((a) => {
         if (!term) return true;
         const p = getPatient(a.patientId);
         const sp = getPractitioner(a.specialistId);
@@ -75,14 +79,14 @@ function AdminPage() {
           a.location.toLowerCase().includes(term)
         );
       }),
-    [term],
+    [term, allAppointments],
   );
 
   const stats = [
     { label: "Patients", value: patients.length, icon: Users },
     { label: "Practitioners", value: practitioners.length, icon: Stethoscope },
     { label: "Referrals", value: referrals.length, icon: Inbox },
-    { label: "Appointments", value: appointments.length, icon: CalendarDays },
+    { label: "Appointments", value: allAppointments.length, icon: CalendarDays },
   ];
 
   return (
